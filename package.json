@@ -1,6 +1,6 @@
 {
   "name": "nexstate",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "An ESNext state management library inspired by Redux.",
   "main": "src/nexstate.js",
   "type": "module",
