@@ -1,7 +1,5 @@
 import { Nexbounce } from 'nexbounce';
 
-export * from './lib/mixin.js';
-
 const actionToken = Symbol('action-token');
 
 export const action = (name, payload = null) => ({ name, payload, token: actionToken });
