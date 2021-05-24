@@ -1,12 +1,38 @@
 {
   "name": "nexstate",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+  "description": "An ESNext state management library inspired by Redux.",
+  "main": "src/nexstate.js",
+  "type": "module",
+  "module": "src/nexstate.js",
+  "engines": {
+    "node": ">=14.6.0",
+    "npm": ">=7.13.0"
   },
-  "keywords": [],
+  "files": [
+    "src/**/*"
+  ],
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "version": "git add -A src",
+    "postversion": "git push && git push --tags"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Hawmex/nexstate.git"
+  },
+  "keywords": [
+    "state management",
+    "redux",
+    "rxjs"
+  ],
   "author": "Hamed Aarab",
-  "license": "MIT"
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Hawmex/nexstate/issues"
+  },
+  "homepage": "https://github.com/Hawmex/nexstate#readme",
+  "dependencies": {
+    "nexbounce": "^1.0.21"
+  }
 }
