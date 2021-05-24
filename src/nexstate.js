@@ -32,6 +32,20 @@ export class Reducer {
   }
 }
 
+/**
+ * @classdesc A class to make a store for state management.
+ * @example
+ * import { Store, Reducer, action } from 'nexstate';
+ *
+ * const increment = () => action('counter/increment');
+ * const counter = new Reducer('counter', 0, { increment: ({ state }) => (state += 1) });
+ * const store = new Store([counter], { logger: true });
+ *
+ * store.subscribe((state) => console.log(state));
+ *
+ * setInterval(() => store.dispatch(increment()), 1000);
+ */
+
 export class Store {
   static #initSymbol = Symbol('@init');
   static #addReducerSymbol = Symbol('@add-reducer');
