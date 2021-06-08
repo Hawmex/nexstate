@@ -2,7 +2,7 @@
 
 import { Nexbounce } from 'nexbounce';
 import { Reducer } from './reducer.js';
-import { actionToken } from './action.js';
+import { action, actionToken } from './action.js';
 
 /**
  * @classdesc A class to make a store for state management.
