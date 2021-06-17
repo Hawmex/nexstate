@@ -21,11 +21,23 @@ npm i nexstate
 ```js
 import { Store, Reducer, action } from 'nexstate';
 
-const increment = () => action('counter/increment');
-const counter = new Reducer('counter', 0, { increment: ({ state }) => (state += 1) });
-const store = new Store([counter], { logger: true });
+const increment1 = () => action('counter1/increment');
+const counter1 = new Reducer('counter1', 0, { increment: ({ state }) => (state += 1) });
+
+const store = new Store([counter1], { logger: true });
 
 store.subscribe((state) => console.log(state));
 
-setInterval(() => store.dispatch(increment()), 1000);
+setInterval(() => store.dispatch(increment1()), 5000);
+
+const decrement2 = () => action('counter2/decrement');
+const counter2 = new Reducer('counter2', 0, { decrement: ({ state }) => (state -= 1) });
+
+const deleteCounter2Controller = new AbortController();
+
+store.addReducer(counter2, { signal: deleteCounter2Controller.signal });
+
+setInterval(() => store.dispatch(decrement2()), 10000);
+
+setTimeout(() => deleteCounter2Controller.abort(), 30000);
 ```
