@@ -1,15 +1,3 @@
-'use strict';
-
-/**
- * @classdesc A class to make a reducer for state management.
- * @example
- * import { Store, Reducer, action } from 'nexstate';
- *
- * const increment = () => action('counter/increment');
- * const counter = new Reducer('counter', 0, { increment: ({ state }) => (state += 1) });
- * const store = new Store([counter], { logger: true });
- */
-
 export class Reducer {
   #cases;
   #defaultState;
