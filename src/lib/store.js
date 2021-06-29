@@ -56,6 +56,7 @@ export class Store {
           delete this.#state[action.payload.key];
           if (this.#logger) Store.#log(action, prev, this.state);
           break;
+
         case Store.#addReducerSymbol:
           this.#state[action.payload.key] = action.payload.defaultState;
           if (this.#logger) Store.#log(action, prev, this.state);
@@ -72,9 +73,11 @@ export class Store {
                 { name: actionName, payload: action.payload },
                 this.#state[reducerKey],
               );
+
               if (this.#logger) Store.#log(action, prev[reducerKey], this.state[reducerKey]);
             } else throw new Error(`${reducerKey} does not have any action named ${actionName}`);
           } else throw new Error(`No reducer named ${reducerKey} in store.`);
+
           break;
       }
 
