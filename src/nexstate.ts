@@ -31,7 +31,7 @@ export class Nexstate<StateType> {
   }
 
   #log(prevState: StateType) {
-    console.groupCollapsed('Lithiux Logger');
+    console.groupCollapsed('Nexstate Logger');
     console.log('%c Previous State:', '', prevState);
     console.log('%c Current State:', '', this.state);
     console.groupEnd();

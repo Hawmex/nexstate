@@ -19,25 +19,22 @@ npm i nexstate
 ## Example
 
 ```js
-import { Store, Reducer, action } from 'nexstate';
+import { Nexstate } from 'nexstate';
 
-const increment1 = () => action('counter1/increment');
-const counter1 = new Reducer('counter1', 0, { increment: ({ state }) => (state += 1) });
+const store = new Nexstate(0, { logger: true });
 
-const store = new Store([counter1], { logger: true });
+const increment = () => store.setState((state) => state + 1);
+const decrement = () => store.setState((state) => state - 1);
 
-store.subscribe((state) => console.log(state));
+await increment();
 
-setInterval(() => store.dispatch(increment1()), 5000);
+// Lithiux Logger
+//    Previous State: 0
+//    Current State: 1
 
-const decrement2 = () => action('counter2/decrement');
-const counter2 = new Reducer('counter2', 0, { decrement: ({ state }) => (state -= 1) });
+await decrement();
 
-const deleteCounter2Controller = new AbortController();
-
-store.addReducer(counter2, { signal: deleteCounter2Controller.signal });
-
-setInterval(() => store.dispatch(decrement2()), 10000);
-
-setTimeout(() => deleteCounter2Controller.abort(), 30000);
+// Lithiux Logger
+//    Previous State: 1
+//    Current State: 0
 ```
