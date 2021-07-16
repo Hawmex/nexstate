@@ -16,30 +16,6 @@ You can try the demo [here](https://codepen.io/Hawmed/pen/PopmeOp).
 npm i nexstate
 ```
 
-## Definition (TypeScript)
-
-```ts
-declare type NexstateOptions = {
-  logger?: boolean;
-};
-
-declare type Action<StateType> = (state: StateType) => StateType;
-declare type Subscription<StateType> = (state: StateType) => void;
-
-declare type SubscribeOptions = {
-  signal?: AbortSignal;
-};
-
-declare class Nexstate<StateType> {
-  constructor(defaultState: StateType, options?: NexstateOptions);
-
-  get state(): StateType;
-
-  setState(action: (state: StateType) => StateType | Promise<StateType>): Promise<void>;
-  subscribe(subscription: Subscription<StateType>, options?: SubscribeOptions): void;
-}
-```
-
 ## Example
 
 ```js
