@@ -51,7 +51,7 @@ const subscription = new AbortController();
 
 store.subscribe(
   (state) => {
-    /* ... */
+    console.log(state);
   },
   { signal: subscription.signal },
 );
@@ -71,5 +71,5 @@ await decrement();
 //    Previous State: 1
 //    Current State: 0
 
-subscription.abort();
+setTimeout(() => subscription.abort());
 ```
