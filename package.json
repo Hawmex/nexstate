@@ -34,7 +34,7 @@
   },
   "homepage": "https://github.com/Hawmex/nexstate#readme",
   "dependencies": {
-    "nexbounce": "^2.0.14"
+    "nexbounce": "^2.0.15"
   },
   "devDependencies": {
     "typescript": "^4.3.5"
