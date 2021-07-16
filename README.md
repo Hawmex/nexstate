@@ -28,13 +28,13 @@ const decrement = () => store.setState((state) => state - 1);
 
 await increment();
 
-// Lithiux Logger
+// Nexstate Logger
 //    Previous State: 0
 //    Current State: 1
 
 await decrement();
 
-// Lithiux Logger
+// Nexstate Logger
 //    Previous State: 1
 //    Current State: 0
 ```
