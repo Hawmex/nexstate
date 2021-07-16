@@ -37,14 +37,28 @@ export class Nexstate<StateType> {
     console.groupEnd();
   }
 
-  async setState(action: (state: StateType) => StateType | Promise<StateType>) {
+  setState(action: (state: StateType) => StateType | Promise<StateType>): void | Promise<void> {
     const prevState = this.state;
 
-    this.#state = await action(prevState);
+    const output = action(prevState);
 
-    if (this.#options?.logger) this.#log(prevState);
+    if (output instanceof Promise)
+      return new Promise(async (resolve) => {
+        this.#state = await output;
 
-    this.#publish();
+        if (this.#options?.logger) this.#log(prevState);
+
+        this.#publish();
+
+        resolve();
+      });
+    else {
+      this.#state = output;
+
+      if (this.#options?.logger) this.#log(prevState);
+
+      this.#publish();
+    }
   }
 
   subscribe(subscription: Subscription<StateType>, options?: SubscribeOptions) {
