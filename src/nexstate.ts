@@ -1,7 +1,8 @@
 import { Nexbounce } from 'nexbounce';
 
 export type NexstateOptions = { logger?: boolean };
-export type Action<T> = (state: T) => T;
+export type SyncAction<T> = (state: T) => T;
+export type AsyncAction<T> = (state: T) => Promise<T>;
 export type Subscription<T> = (state: T) => void;
 export type SubscribeOptions = { signal?: AbortSignal };
 
@@ -37,7 +38,9 @@ export class Nexstate<T> {
     console.groupEnd();
   }
 
-  setState(action: (state: T) => T | Promise<T>): void | Promise<void> {
+  setState(action: SyncAction<T>): void;
+  setState(action: AsyncAction<T>): Promise<void>;
+  setState(action: SyncAction<T> | AsyncAction<T>): void | Promise<void> {
     const prevState = this.state;
 
     const output = action(prevState);
