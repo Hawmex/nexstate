@@ -74,6 +74,6 @@ export class Nexstate<T> {
   runAndSubscribe(subscription: Subscription<T>, options?: SubscribeOptions) {
     if (!options?.signal?.aborted) subscription(this.state);
 
-    this.subscribe(subscription);
+    this.subscribe(subscription, options);
   }
 }
