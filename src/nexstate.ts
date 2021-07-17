@@ -1,22 +1,22 @@
 import { Nexbounce } from 'nexbounce';
 
 export type NexstateOptions = { logger?: boolean };
-export type Action<StateType> = (state: StateType) => StateType;
-export type Subscription<StateType> = (state: StateType) => void;
+export type Action<T> = (state: T) => T;
+export type Subscription<T> = (state: T) => void;
 export type SubscribeOptions = { signal?: AbortSignal };
 
-export class Nexstate<StateType> {
-  #state: StateType;
+export class Nexstate<T> {
+  #state: T;
   #options?: NexstateOptions;
   #publishDebouncer = new Nexbounce();
-  #subscriptions: Set<Subscription<StateType>> = new Set();
+  #subscriptions: Set<Subscription<T>> = new Set();
 
-  constructor(defaultState: StateType, options?: NexstateOptions) {
+  constructor(defaultState: T, options?: NexstateOptions) {
     this.#state = defaultState;
     this.#options = options;
   }
 
-  get state(): StateType {
+  get state(): T {
     return JSON.parse(JSON.stringify(this.#state));
   }
 
@@ -26,18 +26,18 @@ export class Nexstate<StateType> {
     );
   }
 
-  #unsubscribe(subscription: Subscription<StateType>) {
+  #unsubscribe(subscription: Subscription<T>) {
     this.#subscriptions.delete(subscription);
   }
 
-  #log(prevState: StateType) {
+  #log(prevState: T) {
     console.groupCollapsed('Nexstate Logger');
     console.log('%c Previous State:', '', prevState);
     console.log('%c Current State:', '', this.state);
     console.groupEnd();
   }
 
-  setState(action: (state: StateType) => StateType | Promise<StateType>): void | Promise<void> {
+  setState(action: (state: T) => T | Promise<T>): void | Promise<void> {
     const prevState = this.state;
 
     const output = action(prevState);
@@ -61,7 +61,7 @@ export class Nexstate<StateType> {
     }
   }
 
-  subscribe(subscription: Subscription<StateType>, options?: SubscribeOptions) {
+  subscribe(subscription: Subscription<T>, options?: SubscribeOptions) {
     if (!options?.signal?.aborted) {
       this.#subscriptions.add(subscription);
 
