@@ -27,21 +27,21 @@ const subscription = new AbortController();
 
 store.subscribe(
   (state) => {
-    console.log(state);
+    /* ... */
   },
   { signal: subscription.signal },
 );
 
-const increment = () => store.setState((state) => state + 1);
+const asyncIncrement = () => store.setState(async (state) => state + 1);
 const decrement = () => store.setState((state) => state - 1);
 
-await increment();
+await asyncIncrement();
 
 // Nexstate Logger
 //    Previous State: 0
 //    Current State: 1
 
-await decrement();
+decrement();
 
 // Nexstate Logger
 //    Previous State: 1
