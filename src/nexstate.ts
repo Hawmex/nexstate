@@ -40,13 +40,13 @@ export class Nexstate<T> {
 
   setState(action: SyncAction<T>): void;
   setState(action: AsyncAction<T>): Promise<void>;
-  setState(action: SyncAction<T> | AsyncAction<T>): void | Promise<void> {
+  setState(action: any): any {
     const prevState = this.state;
 
     const output = action(prevState);
 
     if (output instanceof Promise)
-      return new Promise(async (resolve) => {
+      return new Promise<void>(async (resolve) => {
         this.#state = await output;
 
         if (this.#options?.logger) this.#log(prevState);
