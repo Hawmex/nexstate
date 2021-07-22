@@ -10,7 +10,7 @@ export class Nexstate<T> {
   #state: T;
   #options?: NexstateOptions;
   #publishDebouncer = new Nexbounce();
-  #subscriptions: Set<Subscription<T>> = new Set();
+  #subscriptions = new Set<Subscription<T>>();
 
   constructor(defaultState: T, options?: NexstateOptions) {
     this.#state = defaultState;
