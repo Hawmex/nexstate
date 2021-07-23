@@ -2,9 +2,10 @@
 
 An ESNext state management library inspired by Redux.
 
-![npm](https://img.shields.io/npm/v/nexstate)
-![npm](https://img.shields.io/npm/dw/nexstate)
-![NPM](https://img.shields.io/npm/l/nexstate)
+[![npm version](https://img.shields.io/npm/v/nexstate?style=for-the-badge)](https://npmjs.com/packages/nexstate)
+[![npm downloads](https://img.shields.io/npm/dw/nexstate?style=for-the-badge)](https://npmjs.com/packages/nexstate)
+[![github issues](https://img.shields.io/github/issues/Hawmex/nexstate?style=for-the-badge)](https://github.com/Hawmex/nexstate/issues)
+[![license](https://img.shields.io/npm/l/nexstate?style=for-the-badge)](https://github.com/Hawmex/nexstate)
 
 ## Demo
 
