@@ -17,6 +17,10 @@ You can try the demo [here](https://codepen.io/Hawmed/pen/PopmeOp).
 npm i nexstate
 ```
 
+## Documentation
+
+You can find documentation [here](https://hawmex.github.io/nexstate/).
+
 ## Example
 
 ```js
