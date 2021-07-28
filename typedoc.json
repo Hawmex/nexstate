@@ -1,6 +1,5 @@
 {
   "out": "docs",
   "entryPoints": ["src/nexstate.ts"],
-  "excludePrivate": true,
-  "includeVersion": true
+  "excludePrivate": true
 }
