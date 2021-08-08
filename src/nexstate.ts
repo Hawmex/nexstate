@@ -31,36 +31,39 @@ export class Nexstate<T> {
     this.#subscriptions.delete(subscription);
   }
 
-  #log(prevState: T) {
+  #log(oldState: T) {
     console.groupCollapsed('Nexstate Logger');
-    console.log('%c Previous State:', '', prevState);
-    console.log('%c Current State:', '', this.state);
+    console.log('%c Old State:', '', oldState);
+    console.log('%c New State:', '', this.state);
     console.groupEnd();
   }
 
   setState(action: SyncAction<T>): void;
   setState(action: AsyncAction<T>): Promise<void>;
   setState(action: any): any {
-    const prevState = this.state;
+    const oldState = this.state;
 
-    const output = action(prevState);
+    const output = action(oldState);
 
     if (output instanceof Promise)
       return new Promise<void>(async (resolve) => {
-        this.#state = await output;
+        const newState = await output;
 
-        if (this.#options?.logger) this.#log(prevState);
+        if (newState !== oldState) {
+          this.#state = newState;
+          this.#publish();
+          resolve();
+        }
 
-        this.#publish();
-
-        resolve();
+        if (this.#options?.logger) this.#log(oldState);
       });
     else {
-      this.#state = output;
+      if (output !== oldState) {
+        this.#state = output;
+        this.#publish();
+      }
 
-      if (this.#options?.logger) this.#log(prevState);
-
-      this.#publish();
+      if (this.#options?.logger) this.#log(oldState);
     }
   }
 
