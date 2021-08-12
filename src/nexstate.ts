@@ -1,12 +1,18 @@
 import { Nexbounce } from 'nexbounce';
 
 export type NexstateOptions = { logger?: boolean };
-export type SyncAction<T> = (state: T) => T;
-export type AsyncAction<T> = (state: T) => Promise<T>;
+export type Action<T> = (state: T) => T;
 export type Subscription<T> = (state: T) => void;
 export type SubscribeOptions = { signal?: AbortSignal };
 
 export class Nexstate<T> {
+  static #log(oldState: unknown, newState: unknown) {
+    console.groupCollapsed('Nexstate Logger');
+    console.log('%c Old State:', '', oldState);
+    console.log('%c New State:', '', newState);
+    console.groupEnd();
+  }
+
   #state: T;
   #options?: NexstateOptions;
   #publishDebouncer = new Nexbounce();
@@ -31,40 +37,20 @@ export class Nexstate<T> {
     this.#subscriptions.delete(subscription);
   }
 
-  #log(oldState: T) {
-    console.groupCollapsed('Nexstate Logger');
-    console.log('%c Old State:', '', oldState);
-    console.log('%c New State:', '', this.state);
-    console.groupEnd();
-  }
-
-  setState(action: SyncAction<T>): void;
-  setState(action: AsyncAction<T>): Promise<void>;
-  setState(action: any): any {
+  setState(action: Action<T>) {
     const oldState = this.state;
 
-    const output = action(oldState);
+    const newState = action(oldState);
 
-    if (output instanceof Promise)
-      return new Promise<void>(async (resolve) => {
-        const newState = await output;
+    if (newState !== oldState) {
+      this.#state = newState;
+      this.#publish();
+    } else if (typeof oldState === 'object' && typeof newState === 'object')
+      throw new RangeError(
+        `oldState and newState seem to be identical. Your store uses an object type (date, map, set, array, etc.), check your action for returning a new instance of that object type.`,
+      );
 
-        if (newState !== oldState) {
-          this.#state = newState;
-          this.#publish();
-          resolve();
-        }
-
-        if (this.#options?.logger) this.#log(oldState);
-      });
-    else {
-      if (output !== oldState) {
-        this.#state = output;
-        this.#publish();
-      }
-
-      if (this.#options?.logger) this.#log(oldState);
-    }
+    if (this.#options?.logger) Nexstate.#log(oldState, this.#state);
   }
 
   subscribe(subscription: Subscription<T>, options?: SubscribeOptions) {
