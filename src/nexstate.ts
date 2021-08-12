@@ -1,9 +1,9 @@
 import { Nexbounce } from 'nexbounce';
 
-export type NexstateOptions = { logger?: boolean };
+export type StoreOptions = { logger?: boolean };
 export type Action<T> = (state: T) => T;
 export type Subscription<T> = (state: T) => void;
-export type SubscribeOptions = { signal?: AbortSignal };
+export type SubscriptionOptions = { signal?: AbortSignal };
 
 export class Nexstate<T> {
   static #log(oldState: unknown, newState: unknown) {
@@ -14,11 +14,11 @@ export class Nexstate<T> {
   }
 
   #state: T;
-  #options?: NexstateOptions;
+  #options?: StoreOptions;
   #publishDebouncer = new Nexbounce();
   #subscriptions = new Set<Subscription<T>>();
 
-  constructor(defaultState: T, options?: NexstateOptions) {
+  constructor(defaultState: T, options?: StoreOptions) {
     this.#state = defaultState;
     this.#options = options;
   }
@@ -53,7 +53,7 @@ export class Nexstate<T> {
     if (this.#options?.logger) Nexstate.#log(oldState, this.#state);
   }
 
-  subscribe(subscription: Subscription<T>, options?: SubscribeOptions) {
+  subscribe(subscription: Subscription<T>, options?: SubscriptionOptions) {
     if (!options?.signal?.aborted) {
       this.#subscriptions.add(subscription);
 
@@ -63,7 +63,7 @@ export class Nexstate<T> {
     }
   }
 
-  runAndSubscribe(subscription: Subscription<T>, options?: SubscribeOptions) {
+  runAndSubscribe(subscription: Subscription<T>, options?: SubscriptionOptions) {
     if (!options?.signal?.aborted) subscription(this.state);
 
     this.subscribe(subscription, options);
