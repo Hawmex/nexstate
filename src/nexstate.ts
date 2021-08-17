@@ -6,7 +6,7 @@ export type Subscription<T> = (state: T) => void;
 export type SubscriptionOptions = { signal?: AbortSignal };
 
 export class Nexstate<T> {
-  static #log(oldState: unknown, newState: unknown) {
+  static #log<T>(oldState: T, newState: T) {
     console.groupCollapsed('Nexstate Logger');
     console.log('%c Old State:', '', oldState);
     console.log('%c New State:', '', newState);
