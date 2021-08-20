@@ -1,6 +1,6 @@
 # nexstate
 
-An ESNext state management library inspired by Redux.
+A simple and decentralized state management library.
 
 [![npm version](https://img.shields.io/npm/v/nexstate?style=for-the-badge)](https://npmjs.com/package/nexstate)
 [![npm downloads](https://img.shields.io/npm/dw/nexstate?style=for-the-badge)](https://npmjs.com/package/nexstate)
