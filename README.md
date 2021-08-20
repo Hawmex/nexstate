@@ -32,25 +32,25 @@ const subscription = new AbortController();
 
 store.subscribe(
   (state) => {
-    /* ... */
+    console.log(state);
   },
   { signal: subscription.signal },
 );
 
-const asyncIncrement = () => store.setState(async (state) => state + 1);
+const asyncIncrement = async () => store.setState((state) => state + 1);
 const decrement = () => store.setState((state) => state - 1);
 
 await asyncIncrement();
 
 // Nexstate Logger
-//    Previous State: 0
-//    Current State: 1
+//    Old State: 0
+//    New State: 1
 
 decrement();
 
 // Nexstate Logger
-//    Previous State: 1
-//    Current State: 0
+//    Old State: 1
+//    New State: 0
 
 setTimeout(() => subscription.abort());
 ```
