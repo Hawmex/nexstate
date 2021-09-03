@@ -5,6 +5,12 @@
   "main": "dist/nexstate.js",
   "type": "module",
   "module": "dist/nexstate.js",
+  "types": "dist/nexstate.d.ts",
+  "exports": {
+    ".": {
+      "default": "./dist/nexstate.js"
+    }
+  },
   "engines": {
     "node": ">=14.6.0",
     "npm": ">=7.13.0"
@@ -38,7 +44,7 @@
   },
   "devDependencies": {
     "prettier": "^2.3.2",
-    "typedoc": "^0.21.7",
+    "typedoc": "^0.21.9",
     "typescript": "^4.4.2"
   }
 }
