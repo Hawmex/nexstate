@@ -24,7 +24,7 @@ You can find documentation [here](https://hawmex.github.io/nexstate/).
 ## Example
 
 ```js
-import { Nexstate } from 'nexstate';
+import { Nexstate } from 'nexstate/nexstate.js';
 
 const store = new Nexstate(0, { logger: true });
 
