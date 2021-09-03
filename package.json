@@ -2,18 +2,17 @@
   "name": "nexstate",
   "version": "5.1.4",
   "description": "An ESNext state management library inspired by Redux.",
-  "main": "dist/nexstate.js",
   "type": "module",
-  "module": "dist/nexstate.js",
-  "types": "dist/nexstate.d.ts",
   "exports": {
-    ".": {
-      "default": "./dist/nexstate.js"
-    }
+    ".": "./dist/nexstate.js"
   },
-  "engines": {
-    "node": ">=14.6.0",
-    "npm": ">=7.13.0"
+  "typesVersions": {
+    "*": {
+      "*": [
+        "dist/*",
+        "dist/nexbounce.d.ts"
+      ]
+    }
   },
   "files": [
     "dist/**/*"
@@ -40,7 +39,7 @@
   },
   "homepage": "https://github.com/Hawmex/nexstate#readme",
   "dependencies": {
-    "nexbounce": "^5.1.3"
+    "nexbounce": "^5.1.5"
   },
   "devDependencies": {
     "prettier": "^2.3.2",
