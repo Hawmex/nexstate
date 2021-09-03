@@ -1,4 +1,4 @@
-import { Nexbounce } from 'nexbounce';
+import { Nexbounce } from 'nexbounce/nexbounce.js';
 
 export type StoreOptions = { logger?: boolean };
 export type Action<T> = (state: T) => T;
