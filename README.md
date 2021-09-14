@@ -1,3 +1,5 @@
+<img src="./logo.png" alt="nex logo" width="128" />
+
 # nexstate
 
 A simple and decentralized state management library.
