@@ -45,7 +45,7 @@ export class Nexstate<T> {
     if (newState !== oldState) {
       this.#state = newState;
       this.#publish();
-    } else if (typeof oldState === 'object' && typeof newState === 'object')
+    } else if (typeof newState === 'object' && newState !== null)
       throw new RangeError(
         `oldState and newState seem to be identical. Your store uses an object type (date, map, set, array, etc.), check your action for returning a new instance of that object type.`,
       );
