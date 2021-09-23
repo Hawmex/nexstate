@@ -57,7 +57,7 @@ export class Nexstate<T> {
     if (!options?.signal?.aborted) {
       this.#subscriptions.add(subscription);
 
-      options?.signal?.addEventListener?.('abort', () => this.#unsubscribe(subscription), {
+      options?.signal?.addEventListener('abort', () => this.#unsubscribe(subscription), {
         once: true,
       });
     }
