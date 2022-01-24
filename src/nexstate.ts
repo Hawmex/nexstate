@@ -8,7 +8,7 @@ type Subscription = {
   cancel(): void;
 };
 
-abstract class Store {
+export abstract class Store {
   readonly #subscribers = new Set<Subscriber>();
   readonly #debouncer = new Debouncer();
 
