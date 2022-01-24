@@ -1,8 +1,8 @@
 import { Debouncer } from 'nexbounce/nexbounce.js';
 
-type Subscriber = () => void;
+export type Subscriber = () => void;
 
-type Subscription = {
+export type Subscription = {
   readonly store: Store;
   readonly subscriber: Subscriber;
   cancel(): void;
