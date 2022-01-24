@@ -1,71 +1,40 @@
-import { Nexbounce } from 'nexbounce/nexbounce.js';
+import { Debouncer } from 'nexbounce/nexbounce.js';
 
-export type StoreOptions = { logger?: boolean };
-export type Action<T> = (state: T) => T;
-export type Subscription<T> = (state: T) => void;
-export type SubscriptionOptions = { signal?: AbortSignal };
+type Subscriber = () => void;
 
-export class Nexstate<T> {
-  static #log<T>(oldState: T, newState: T) {
-    console.groupCollapsed('Nexstate Logger');
-    console.log('%c Old State:', '', oldState);
-    console.log('%c New State:', '', newState);
-    console.groupEnd();
-  }
+type Subscription = {
+  readonly store: Store;
+  readonly subscriber: Subscriber;
+  cancel(): void;
+};
 
-  #state: T;
-  #options?: StoreOptions;
-  #publishDebouncer = new Nexbounce();
-  #subscriptions = new Set<Subscription<T>>();
-
-  constructor(defaultState: T, options?: StoreOptions) {
-    this.#state = defaultState;
-    this.#options = options;
-  }
-
-  get state(): T {
-    return this.#state;
-  }
+abstract class Store {
+  readonly #subscribers = new Set<Subscriber>();
+  readonly #debouncer = new Debouncer();
 
   #publish() {
-    this.#publishDebouncer.enqueue(() =>
-      this.#subscriptions.forEach((subscription) => subscription(this.state)),
+    this.#debouncer.enqueue(() =>
+      this.#subscribers.forEach((subscriber) => subscriber()),
     );
   }
 
-  #unsubscribe(subscription: Subscription<T>) {
-    this.#subscriptions.delete(subscription);
+  setState(callback: () => void) {
+    callback();
+    this.#publish();
   }
 
-  setState(action: Action<T>) {
-    const oldState = this.state;
+  subscribe(subscriber: Subscriber) {
+    this.#subscribers.add(subscriber);
 
-    const newState = action(oldState);
-
-    if (newState !== oldState) {
-      this.#state = newState;
-      this.#publish();
-    } else if (typeof newState === 'object' && newState !== null)
-      throw new RangeError(
-        `oldState and newState seem to be identical. Your store uses an object type (date, map, set, array, etc.), check your action for returning a new instance of that object type.`,
-      );
-
-    if (this.#options?.logger) Nexstate.#log(oldState, this.#state);
+    return {
+      store: this,
+      subscriber: subscriber,
+      cancel: () => this.#subscribers.delete(subscriber),
+    } as Subscription;
   }
 
-  subscribe(subscription: Subscription<T>, options?: SubscriptionOptions) {
-    if (!options?.signal?.aborted) {
-      this.#subscriptions.add(subscription);
-
-      options?.signal?.addEventListener('abort', () => this.#unsubscribe(subscription), {
-        once: true,
-      });
-    }
-  }
-
-  runAndSubscribe(subscription: Subscription<T>, options?: SubscriptionOptions) {
-    if (!options?.signal?.aborted) subscription(this.state);
-
-    this.subscribe(subscription, options);
+  runAndSubscribe(subscriber: Subscriber) {
+    subscriber();
+    return this.subscribe(subscriber);
   }
 }

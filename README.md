@@ -26,33 +26,24 @@ You can find documentation [here](https://hawmex.github.io/nexstate/).
 ## Example
 
 ```js
-import { Nexstate } from 'nexstate/nexstate.js';
+import { Store } from 'nexstate/nexstate.js';
 
-const store = new Nexstate(0, { logger: true });
+class CounterStore extends Store {
+  count = 0;
 
-const subscription = new AbortController();
+  increment() {
+    this.setState(() => (this.count += 1));
+  }
+}
 
-store.subscribe(
-  (state) => {
-    console.log(state);
-  },
-  { signal: subscription.signal },
+const counterStore = new CounterStore();
+
+const subscription = counterStore.runAndSubscribe(() =>
+  console.log(counterStore.count),
 );
 
-const asyncIncrement = async () => store.setState((state) => state + 1);
-const decrement = () => store.setState((state) => state - 1);
+counterStore.increment();
+counterStore.increment();
 
-await asyncIncrement();
-
-// Nexstate Logger
-//    Old State: 0
-//    New State: 1
-
-decrement();
-
-// Nexstate Logger
-//    Old State: 1
-//    New State: 0
-
-setTimeout(() => subscription.abort());
+setTimeout(subscription.cancel);
 ```
