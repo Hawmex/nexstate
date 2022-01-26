@@ -2,10 +2,8 @@ import { Debouncer } from 'nexbounce/nexbounce.js';
 
 export type Subscriber = () => void;
 
-export type Subscription = {
-  readonly store: Store;
-  readonly subscriber: Subscriber;
-  cancel(): void;
+export type SubscriptionOptions = {
+  signal: AbortSignal;
 };
 
 export abstract class Store {
@@ -23,18 +21,20 @@ export abstract class Store {
     this.#publish();
   }
 
-  subscribe(subscriber: Subscriber) {
-    this.#subscribers.add(subscriber);
+  subscribe(subscriber: Subscriber, options?: SubscriptionOptions) {
+    if (!options?.signal.aborted) {
+      this.#subscribers.add(subscriber);
 
-    return {
-      store: this,
-      subscriber: subscriber,
-      cancel: () => this.#subscribers.delete(subscriber),
-    } as Subscription;
+      options?.signal.addEventListener(
+        'abort',
+        () => this.#subscribers.delete(subscriber),
+        { once: true },
+      );
+    }
   }
 
-  runAndSubscribe(subscriber: Subscriber) {
+  runAndSubscribe(subscriber: Subscriber, options?: SubscriptionOptions) {
     subscriber();
-    return this.subscribe(subscriber);
+    this.subscribe(subscriber, options);
   }
 }

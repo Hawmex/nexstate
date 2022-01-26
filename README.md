@@ -37,13 +37,14 @@ class CounterStore extends Store {
 }
 
 const counterStore = new CounterStore();
+const subscriptionController = new AbortController();
 
-const subscription = counterStore.runAndSubscribe(() =>
-  console.log(counterStore.count),
-);
+counterStore.runAndSubscribe(() => console.log(counterStore.count), {
+  signal: subscriptionController.signal,
+});
 
 counterStore.increment();
 counterStore.increment();
 
-setTimeout(subscription.cancel);
+setTimeout(() => subscriptionController.abort());
 ```
