@@ -3,7 +3,7 @@ import { Debouncer } from 'nexbounce/nexbounce.js';
 export type Subscriber = () => void;
 
 export type SubscriptionOptions = {
-  signal: AbortSignal;
+  signal?: AbortSignal;
 };
 
 export abstract class Store {
@@ -22,10 +22,10 @@ export abstract class Store {
   }
 
   subscribe(subscriber: Subscriber, options?: SubscriptionOptions) {
-    if (!options?.signal.aborted) {
+    if (!options?.signal?.aborted) {
       this.#subscribers.add(subscriber);
 
-      options?.signal.addEventListener(
+      options?.signal?.addEventListener(
         'abort',
         () => this.#subscribers.delete(subscriber),
         { once: true },
